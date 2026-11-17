@@ -430,7 +430,7 @@ impl Adb {
         let prefix = format!("{}/", root.trim_end_matches('/'));
         let mut paths = Vec::new();
         let mut ignored = std::collections::BTreeSet::new();
-        for record in fields.chunks_exact(2) {
+        for record in fields.as_chunks::<2>().0 {
             ensure!(
                 record[0] == b"d" || record[0] == b"f",
                 "设备文件类型响应无效"
@@ -474,7 +474,7 @@ impl Adb {
         let mut failures = std::collections::BTreeMap::new();
         let mut records = vec![];
         let prefix = format!("{}/", root.trim_end_matches('/'));
-        for record in fields.chunks_exact(3) {
+        for record in fields.as_chunks::<3>().0 {
             if record[0] == b"!" {
                 let path = std::str::from_utf8(record[1])?
                     .strip_prefix(&prefix)
