@@ -1,0 +1,25 @@
+[package]
+name = "msync-desktop"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+build = "build.rs"
+
+[[bin]]
+name = "msync-ui"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+msync-core = { path = "../core" }
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tauri = { version = "2", features = ["tray-icon"] }
+rfd = "0.15"
+arboard = "3"
+uuid.workspace = true
+fs2 = "0.4"
+tempfile = "3"

@@ -1,0 +1,16 @@
+[package]
+name = "msync-log"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+anyhow.workspace = true
+chrono.workspace = true
+serde.workspace = true
+uuid.workspace = true
+fs2 = "0.4"
+
+[dev-dependencies]
+tempfile = "3"
+filetime = "0.2"

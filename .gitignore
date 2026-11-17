@@ -1,0 +1,17 @@
+/target/
+/dist/
+/releases/
+/crates/desktop/gen/
+/node_modules/
+/bin/*
+/tools/rclone*
+/tools/webview-download-page.html
+/runtime/
+/docs/*.docx
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+*.log

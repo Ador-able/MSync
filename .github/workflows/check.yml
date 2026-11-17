@@ -1,0 +1,38 @@
+name: 检查
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Windows 构建与同步验证
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: 安装 Rust 工具链
+        run: rustup show
+      - name: 构建前端
+        run: |
+          npm ci
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          npm run build
+      - name: 检查格式
+        run: cargo fmt --all -- --check
+      - name: 运行 Rust 测试
+        run: cargo test --workspace --locked
+      - name: 检查 Rust 代码
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: 验证离线同步
+        run: |
+          $env:MSYNC_TEST_BASH = Join-Path $env:ProgramFiles 'Git/bin/bash.exe'
+          cargo run -p msync-core --example adb_sync_test --locked -- --simulated
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cargo run -p msync-core --example adb_sync_test --locked -- --simulated --ignore-rules
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          cargo run -p msync-core --example adb_sync_test --locked -- --simulated --filename-errors
